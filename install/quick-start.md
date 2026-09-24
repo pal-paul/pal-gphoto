@@ -92,7 +92,8 @@ Cloud OAuth client. The reverse proxy hostname must forward to NAS port `8080`.
 Start and authenticate the first account:
 
 ```sh
-docker compose up -d --build
+docker compose pull
+docker compose up -d
 docker compose exec pal-gphoto /usr/local/bin/pal-gphoto auth
 ```
 
@@ -116,7 +117,8 @@ separate.
 Start the optional profile and authenticate it:
 
 ```sh
-docker compose --profile account-2 up -d --build
+docker compose --profile account-2 pull
+docker compose --profile account-2 up -d
 docker compose exec pal-gphoto-account-2 /usr/local/bin/pal-gphoto auth
 docker compose exec pal-gphoto-account-2 /usr/local/bin/pal-gphoto accounts
 docker compose exec pal-gphoto-account-2 /usr/local/bin/pal-gphoto pick
@@ -132,8 +134,13 @@ callback URL, and encryption key.
 docker compose ps
 docker compose logs -f pal-gphoto
 docker compose --profile account-2 logs -f pal-gphoto-account-2
-docker compose --profile account-2 up -d --build
+docker compose --profile account-2 pull
+docker compose --profile account-2 up -d
 ```
+
+`PAL_GPHOTO_VERSION` in `install/.env` pins the deployment to a release. Change
+it to a newer version, then run `docker compose pull` and `docker compose up -d`
+to upgrade. Do not use `latest` when repeatable NAS deployments are required.
 
 Back up each account's complete data directory and `install/.env` securely. A
 container restart reuses the encrypted refresh token from SQLite. Losing or

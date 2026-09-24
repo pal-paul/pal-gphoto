@@ -1,6 +1,6 @@
 x-pal-gphoto: &pal-gphoto
-  build:
-    context: ../backend
+  image: ghcr.io/pal-paul/pal-gphoto:${PAL_GPHOTO_VERSION:-v1.0.0}
+  pull_policy: always
   restart: unless-stopped
   security_opt:
     - no-new-privileges:true
