@@ -1,0 +1,36 @@
+x-pal-gphoto: &pal-gphoto
+  build:
+    context: ./backend
+  restart: unless-stopped
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  pal-gphoto:
+    <<: *pal-gphoto
+    environment:
+      GOOGLE_CLIENT_ID: ${GOOGLE_ACCOUNT_1_CLIENT_ID:?set GOOGLE_ACCOUNT_1_CLIENT_ID in .env}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_ACCOUNT_1_CLIENT_SECRET:?set GOOGLE_ACCOUNT_1_CLIENT_SECRET in .env}
+      GOOGLE_ACCOUNT_EMAIL: ${GOOGLE_ACCOUNT_1_EMAIL:?set GOOGLE_ACCOUNT_1_EMAIL in .env}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_ACCOUNT_1_REDIRECT_URL:?set GOOGLE_ACCOUNT_1_REDIRECT_URL in .env}
+      PAL_GPHOTO_TOKEN_KEY: ${PAL_GPHOTO_ACCOUNT_1_TOKEN_KEY:?set PAL_GPHOTO_ACCOUNT_1_TOKEN_KEY in .env}
+      PAL_GPHOTO_POLL_INTERVAL: ${PAL_GPHOTO_ACCOUNT_1_POLL_INTERVAL:-30s}
+    ports:
+      - "${PAL_GPHOTO_ACCOUNT_1_PORT:-8080}:8080"
+    volumes:
+      - ${PAL_GPHOTO_ACCOUNT_1_DATA_DIR:-./data}:/data
+
+  pal-gphoto-account-2:
+    <<: *pal-gphoto
+    profiles: ["account-2"]
+    environment:
+      GOOGLE_CLIENT_ID: ${GOOGLE_ACCOUNT_2_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_ACCOUNT_2_CLIENT_SECRET:-}
+      GOOGLE_ACCOUNT_EMAIL: ${GOOGLE_ACCOUNT_2_EMAIL:-}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_ACCOUNT_2_REDIRECT_URL:-}
+      PAL_GPHOTO_TOKEN_KEY: ${PAL_GPHOTO_ACCOUNT_2_TOKEN_KEY:-}
+      PAL_GPHOTO_POLL_INTERVAL: ${PAL_GPHOTO_ACCOUNT_2_POLL_INTERVAL:-30s}
+    ports:
+      - "${PAL_GPHOTO_ACCOUNT_2_PORT:-8081}:8080"
+    volumes:
+      - ${PAL_GPHOTO_ACCOUNT_2_DATA_DIR:-./data-account-2}:/data

@@ -1,0 +1,21 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+backend/.env.gphoto
+backend/.env.gphoto.*
+!backend/.env.gphoto.example
+
+# Persistent application data
+data/
+data-account-2/
+install/data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Build and OS artifacts
+gphoto
+.DS_Store
