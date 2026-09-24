@@ -17,5 +17,5 @@ install/data/
 *.sqlite3
 
 # Build and OS artifacts
-gphoto
+/gphoto
 .DS_Store
